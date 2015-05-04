@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>luigiJS</title>
+  <style>
+    body {
+      font-family: arial, sans-serif;
+      padding: 0 15px;
+      max-width: 960px;
+      margin: 0 auto;
+      color: #333;
+    }
+    iframe {
+      border: none;
+      width: 100%;
+    }
+  </style>
+  <script src="frames.js"></script>
+  <script src="luigi.js"></script>
+</head>
+<body>
+<!--
+  <iframe id="one" src="/bits/title.html"></iframe>
+  <iframe id="two" src="/bits/para1.html"></iframe>
+  <iframe id="three" src="/bits/quote.html"></iframe>
+  <iframe id="foor" src="/bits/para2.html"></iframe>
+  -->
+  <div id="one"  data-role="frame" data-source="/bits/title.html"></div>
+  <div id="two"  data-role="frame" data-source="/bits/para1.html"></div>
+  <div id="three"data-role="frame" data-source="/bits/quote.html"></div>
+  <div id="foor" data-role="frame" data-source="/bits/para2.html"></div>
+</body>
+</html>
