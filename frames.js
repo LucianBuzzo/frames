@@ -10,7 +10,28 @@
   function init() {
     var nodes = toArray(document.querySelectorAll('[data-role="frame"]'));
     nodes.forEach(function(node) {
-      node.innerHTML = '<iframe onload="autoResize(this)" src="' + node.dataset.source + '"></iframe>';
+      createFrame(node);
+    });
+  }
+
+  function createFrame(node) {
+    var frame = document.createElement('iframe');
+    var styles = toArray(document.head.querySelectorAll('style, link[type="text/css"]')).reverse();
+
+    // Can add global variables and function in here ---
+    node.appendChild(frame);
+    frame.contentWindow.Frames = Frames;
+
+    luigi.get(node.dataset.source, function(data) {
+      var src = frame.contentWindow.document;
+      src.open();
+      src.write(data);
+      src.close();
+      styles.forEach(function(styleElement) {
+        var firstChild = src.head.firstChild;
+        src.head.insertBefore(styleElement.cloneNode(true), firstChild);
+      });
+      autoResize(frame);
     });
   }
 
@@ -21,10 +42,15 @@
     });
   }
 
-  window.frames = {
-    init: init,
-    autoResize: autoResize,
-    resizeAll: resizeAll
-  };
+  function Frames() {
+    /* empty for the time being! */
+  }
+
+  Frames.init = init;
+  Frames.autoResize = autoResize;
+  Frames.resizeAll = resizeAll;
+
+  window.Frames = Frames;
+
   window.onload = init;
 }());
