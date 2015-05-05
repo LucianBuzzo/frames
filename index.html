@@ -27,5 +27,12 @@
   <div id="two"  data-role="frame" data-source="/bits/para1.html"></div>
   <div id="three"data-role="frame" data-source="/bits/quote.html"></div>
   <div id="foor" data-role="frame" data-source="/bits/para2.html"></div>
+
+  <script>
+    Frames.extend('foo', { foo: 'bar' });
+    
+    window.onload = Frames.init;
+    
+  </script>
 </body>
 </html>

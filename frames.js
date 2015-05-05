@@ -7,7 +7,7 @@
     var newheight = Math.ceil(elem.contentWindow.document.documentElement.scrollHeight);
     elem.height= (newheight + 1) + "px";
   }
-  function init() {
+  function init(node) {
     var nodes = toArray(document.querySelectorAll('[data-role="frame"]'));
     nodes.forEach(function(node) {
       createFrame(node);
@@ -46,11 +46,21 @@
     /* empty for the time being! */
   }
 
+  function extend(key, obj) {
+    if ( Frames.hasOwnProperty(key) ) {
+      return;
+    } else {
+      Frames[key] = obj;
+    }
+  }
+
+
+
   Frames.init = init;
   Frames.autoResize = autoResize;
   Frames.resizeAll = resizeAll;
+  Frames.extend = extend;
+  Frames.createFrame = createFrame;
 
   window.Frames = Frames;
-
-  window.onload = init;
 }());
