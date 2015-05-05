@@ -1,4 +1,15 @@
 ;(function() {
+  var renderedFrames = [];
+
+  function get(url, callback) {
+    var req = new XMLHttpRequest();
+    req.onload = function() {
+      callback(this.responseText);
+    };
+    req.open('get', url, true);
+    req.send();
+    return req;
+  }
   function toArray(value) {
     return Array.prototype.slice.call(value);
   }
@@ -22,7 +33,7 @@
     node.appendChild(frame);
     frame.contentWindow.Frames = Frames;
 
-    luigi.get(node.dataset.source, function(data) {
+    get(node.dataset.source, function(data) {
       var src = frame.contentWindow.document;
       src.open();
       src.write(data);
@@ -32,12 +43,12 @@
         src.head.insertBefore(styleElement.cloneNode(true), firstChild);
       });
       autoResize(frame);
+      renderedFrames.push(frame);
     });
   }
 
   function resizeAll() {
-    var nodes = toArray(document.querySelectorAll('[data-role="frame"] iframe'));
-    nodes.forEach(function(node) {
+    renderedFrames.forEach(function(node) {
       autoResize(node);
     });
   }
@@ -54,13 +65,12 @@
     }
   }
 
-
-
   Frames.init = init;
   Frames.autoResize = autoResize;
   Frames.resizeAll = resizeAll;
   Frames.extend = extend;
   Frames.createFrame = createFrame;
 
+  window.addEventListener('resize', resizeAll);
   window.Frames = Frames;
 }());
