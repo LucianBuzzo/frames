@@ -2,12 +2,56 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <style>
+    h1 {
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      transition: color ease-in-out 5s;
+    }
+  </style>
 </head>
 <body>
-<h1>thickFrames JS</h1>
-<script>
-  console.log('hiya');
-  console.log(Frames);
-</script>
+  <h1 id="page-title">thickFrames JS</h1>
+  <span style="color:#C04848">Hiya</span><br>
+  <span style="color:#F07241">Hiya</span><br>
+  <span style="color:#24B694">Hiya</span><br>
+  <span style="color:#D22042">Hiya</span><br>
+  <span style="color:#A3B808">Hiya</span><br>
+  <span style="color:#30C4C9">Hiya</span><br>
+  <span style="color:#E7D84B">Hiya</span><br>
+  <span style="color:#1B8798">Hiya</span><br>
+
+  <script>
+    console.log('hiya');
+    console.log(Frames);
+
+    var title = document.getElementById('page-title');
+
+    function getRandomColor(exclusion) {
+      var colors = [
+        '#C04848',
+        '#F07241',
+        '#24B694',
+        '#D22042',
+        '#A3B808',
+        '#30C4C9',
+        '#E7D84B',
+        '#1B8798',
+      ];
+      return colors[Frames.randomInt(0, colors.length)];
+    }
+
+    function changeColor() {
+      var currentColor = title.style.color;
+      title.style.color = getRandomColor(currentColor);
+    }
+
+    setInterval(changeColor, 1000);
+
+    title.addEventListener('click', changeColor, false);
+
+  </script>
 </body>
 </html>
