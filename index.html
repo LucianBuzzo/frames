@@ -22,7 +22,12 @@
   <div id="foor" data-role="frame" data-source="/bits/para2.html"></div>
 
   <script>
-    Frames.extend('foo', { foo: 'bar' });
+
+    function randomInt(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+    Frames.extend('randomInt', randomInt);
 
     window.onload = Frames.init;
   </script>
