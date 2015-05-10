@@ -25,6 +25,12 @@
     });
   }
 
+  function contextWrapper(context, fn) {
+    return function() {
+      return fn.apply(context, arguments);
+    };
+  }
+
   function createFrame(node) {
     var frame = document.createElement('iframe');
     var styles = toArray(document.head.querySelectorAll('style, link[type="text/css"]')).reverse();
@@ -32,6 +38,11 @@
     // Can add global variables and function in here ---
     node.appendChild(frame);
     frame.contentWindow.Frames = Frames;
+    for (var key in injections ) {
+      if ( injections.hasOwnProperty(key) ) {
+        frame.contentWindow[key] = contextWrapper(frame.contentWindow, injections[key]);
+      }
+    }
 
     get(node.dataset.source, function(data) {
       var src = frame.contentWindow.document;
@@ -53,15 +64,40 @@
     });
   }
 
-  function Frames() {
-    /* empty for the time being! */
+  function Frames(context, fn) {
+    if ( typeof context !== undefined) {
+    }
+    if ( typeof fn !== undefined) {
+      for (var key in extensions ) {
+        extend.call(context, key, extensions[key]);
+      }
+      fn.call(context);
+    }
   }
+
+  var extensions = {};
+
 
   function extend(key, obj) {
     if ( Frames.hasOwnProperty(key) ) {
       return;
+    } else if (typeof obj === 'function') {
+      this[key] = function() {
+        obj.apply(this, arguments);
+      };
     } else {
-      Frames[key] = obj;
+      this[key] = obj;
+    }
+    extensions[key] = obj;
+  }
+
+  var injections = {};
+
+  function inject(key, obj) {
+    if ( injections.hasOwnProperty(key) ) {
+      return;
+    } else {
+      injections[key] = obj;
     }
   }
 
@@ -69,6 +105,7 @@
   Frames.autoResize = autoResize;
   Frames.resizeAll = resizeAll;
   Frames.extend = extend;
+  Frames.inject = inject;
   Frames.createFrame = createFrame;
 
   window.addEventListener('resize', resizeAll);
