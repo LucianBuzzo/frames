@@ -65,9 +65,16 @@
   }
 
   function Frames(context, fn) {
-    if ( typeof context !== undefined) {
+    if (typeof context === 'function' && typeof fn === 'undefined') {
+      fn = context;
+      context = window;
     }
-    if ( typeof fn !== undefined) {
+
+    if (typeof context === 'undefined' || context === null) {
+      context = window;
+    }
+
+    if (typeof fn === 'function') {
       for (var key in extensions ) {
         extend.call(context, key, extensions[key]);
       }
