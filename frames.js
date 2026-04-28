@@ -19,9 +19,20 @@
     elem.height= (newheight + 1) + "px";
   }
   function init(node) {
-    var nodes = toArray(document.querySelectorAll('[data-role="frame"]'));
-    nodes.forEach(function(node) {
-      createFrame(node);
+    var nodes;
+
+    if (typeof node === 'string') {
+      nodes = toArray(document.querySelectorAll(node));
+    } else if (node && typeof node.length === 'number' && !node.tagName) {
+      nodes = toArray(node);
+    } else if (node && node.tagName) {
+      nodes = [node];
+    } else {
+      nodes = toArray(document.querySelectorAll('[data-role="frame"]'));
+    }
+
+    nodes.forEach(function(frameNode) {
+      createFrame(frameNode);
     });
   }
 
